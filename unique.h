@@ -41,19 +41,11 @@ public:
     UniquePtr(UniquePtr<U, D>&& other) noexcept
         : data_(other.Release()), CompressedDeleter(std::forward<D>(other.GetDeleter())) {
     }
-    /*template <class U>
-    UniquePtr(UniquePtr<U>&& other) noexcept
-        : data_(other.Release()), CompressedDeleter(std::move(other)) {
-    }*/
-    // UniquePtr(T *ptr, const Deleter& deleter) noexcept : data_(data_), CompressedDeleter(deleter)
-    // {} UniquePtr(T *ptr, Deleter&& deleter) noexcept : data_(data_),
-    // CompressedDeleter(std::move(deleter)) {}
     template <typename D>
     UniquePtr(T* ptr, D&& deleter) noexcept
         : data_(ptr), CompressedDeleter(std::forward<D>(deleter)) {
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // `operator=`-s
 
     UniquePtr& operator=(UniquePtr&& other) noexcept {
@@ -74,14 +66,12 @@ public:
         return *this;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Destructor
 
     ~UniquePtr() noexcept {
         CompressedDeleter::Get()(data_);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifiers
 
     T* Release() noexcept {
@@ -101,7 +91,6 @@ public:
         std::swap(this->GetDeleter(), other.GetDeleter());
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Observers
 
     T* Get() const {
@@ -117,7 +106,6 @@ public:
         return (data_ != nullptr);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Single-object dereference operators
 
     typename std::add_lvalue_reference<T>::type operator*() const {
@@ -128,7 +116,6 @@ public:
     }
 
 private:
-    // template <typename U> friend class UniquePtr;
     T* data_ = nullptr;
 };
 
