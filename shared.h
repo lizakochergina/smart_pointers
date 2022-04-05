@@ -10,7 +10,6 @@
 template <typename T>
 class SharedPtr {
 public:
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
 
     SharedPtr() noexcept : ptr_(nullptr), block_(nullptr) {
@@ -68,75 +67,27 @@ public:
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // `operator=`-s
 
     SharedPtr& operator=(const SharedPtr& other) {
         SharedPtr(other).Swap(*this);
-        //        if (block_) {
-        //            if (block_->sp_cnt_ref_ == 1) {
-        //                delete block_;
-        //            } else {
-        //                --block_->sp_cnt_ref_;
-        //            }
-        //        }
-        //        ptr_ = other.ptr_;
-        //        block_ = other.block_;
-        //        if (block_) {
-        //            ++block_->sp_cnt_ref_;
-        //        }
         return *this;
     }
     template <typename U>
     SharedPtr& operator=(const SharedPtr<U>& other) {
         SharedPtr<T>(other).Swap(*this);
-        //        if (block_) {
-        //            if (block_->sp_cnt_ref_ == 1) {
-        //                delete block_;
-        //            } else {
-        //                --block_->sp_cnt_ref_;
-        //            }
-        //        }
-        //        ptr_ = other.ptr_;
-        //        block_ = other.block_;
-        //        if (block_) {
-        //            ++block_->sp_cnt_ref_;
-        //        }
         return *this;
     }
     SharedPtr& operator=(SharedPtr&& other) {
         SharedPtr(std::move(other)).Swap(*this);
-        //        if (block_) {
-        //            if (block_->sp_cnt_ref_ == 1) {
-        //                delete block_;
-        //            } else {
-        //                --block_->sp_cnt_ref_;
-        //            }
-        //        }
-        //        ptr_ = std::move(other.ptr_);
-        //        block_ = std::move(other.block_);
-        //        other.ptr_ = nullptr;
-        //        other.block_ = nullptr;
         return *this;
     }
     template <typename U>
     SharedPtr& operator=(SharedPtr<U>&& other) {
         SharedPtr<T>(std::move(other)).Swap(*this);
-        //        if (block_) {
-        //            if (block_->sp_cnt_ref_ == 1) {
-        //                delete block_;
-        //            } else {
-        //                --block_->sp_cnt_ref_;
-        //            }
-        //        }
-        //        ptr_ = std::move(other.ptr_);
-        //        block_ = std::move(other.block_);
-        //        other.ptr_ = nullptr;
-        //        other.block_ = nullptr;
         return *this;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Destructor
 
     ~SharedPtr() {
@@ -155,41 +106,20 @@ public:
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifiers
 
     void Reset() {
         SharedPtr().Swap(*this);
-        //        if (block_) {
-        //            if (block_->sp_cnt_ref_ == 1) {
-        //                delete block_;
-        //            } else {
-        //                --block_->sp_cnt_ref_;
-        //            }
-        //        }
-        //        ptr_ = nullptr;
-        //        block_ = nullptr;
     }
     template <typename U>
     void Reset(U* ptr) {
         SharedPtr<T>(ptr).Swap(*this);
-        //        if (block_) {
-        //            if (block_->sp_cnt_ref_ == 1) {
-        //                delete block_;
-        //            } else {
-        //                --block_->sp_cnt_ref_;
-        //            }
-        //        }
-        //        ptr_ = nullptr;
-        //        block_ = nullptr;
-        //        *this = SharedPtr<T>(ptr);
     }
     void Swap(SharedPtr& other) {
         std::swap(ptr_, other.ptr_);
         std::swap(block_, other.block_);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Observers
 
     T* Get() const {
