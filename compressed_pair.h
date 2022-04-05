@@ -8,10 +8,6 @@ struct CompressedPairElement {
     T value_;
 
     CompressedPairElement() = default;
-    /*CompressedPairElement(const T& value) : value_(value) {
-    }
-    CompressedPairElement(T&& value) noexcept : value_(std::forward<T>(value)) {
-    }*/
     template <typename U>
     CompressedPairElement(U&& value) noexcept : value_(std::forward<U>(value)) {}
 
@@ -27,10 +23,6 @@ template <typename T, std::size_t I>
 struct CompressedPairElement<T, I, true> : public T {
 
     CompressedPairElement() = default;
-    /*CompressedPairElement(const T&) {
-    }
-    CompressedPairElement(T&&) noexcept {
-    }*/
     template <typename U>
     CompressedPairElement(U&&) noexcept {}
 
@@ -42,7 +34,6 @@ struct CompressedPairElement<T, I, true> : public T {
     };
 };
 
-// Me think, why waste time write lot code, when few code do trick.
 template <typename F, typename S>
 class CompressedPair : private CompressedPairElement<F, 0>, private CompressedPairElement<S, 1> {
 public:
